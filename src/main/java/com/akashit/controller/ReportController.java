@@ -13,11 +13,29 @@ import com.akashit.entity.CitizenPlan;
 import com.akashit.request.SearchRequest;
 import com.akashit.service.ReportService;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 @Controller
 public class ReportController {
 
     @Autowired
     private ReportService service;
+    
+    @GetMapping("/pdf")
+    public void PdfExport(HttpServletResponse response) throws Exception {
+        response.setContentType("application/pdf");
+        response.addHeader("Content-Disposition", "attachment; filename=plan.pdf");
+        service.exportPdf(response);
+    }
+    
+    @GetMapping("/excel")
+    public void excelExport(HttpServletResponse response) throws Exception {
+        response.setContentType("application/octet-stream");
+        response.addHeader("Content-Disposition", "attachment; filename=plan.xls");
+        service.exportExcel(response);
+    }
+
+    
 
     @PostMapping("/search")
     public String handleSearch(@ModelAttribute("search") SearchRequest request, Model model) {
@@ -38,10 +56,8 @@ public class ReportController {
         return "index";
     }
 
-
     private void init(Model model) {
         model.addAttribute("names", service.getPlanNames());
         model.addAttribute("status", service.getPlanStatus());
     }
-
 }

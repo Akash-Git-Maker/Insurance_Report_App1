@@ -1,4 +1,4 @@
-package com.akashit.service;
+package com.akashit.util;
 
 import java.util.List;
 

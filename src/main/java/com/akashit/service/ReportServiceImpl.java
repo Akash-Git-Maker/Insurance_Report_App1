@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import com.akashit.entity.CitizenPlan;
 import com.akashit.repo.CitizenRepository;
 import com.akashit.request.SearchRequest;
+import com.akashit.util.EmailUtils;
 import com.akashit.util.ExportExcel;
+import com.akashit.util.ExportPdf;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -24,6 +26,9 @@ public class ReportServiceImpl implements ReportService {
 	
 	@Autowired
 	private ExportPdf exportPdf;
+	
+	@Autowired
+	private EmailUtils emailUtils;
 
 	@Override
 	public List<String> getPlanNames() {
@@ -55,6 +60,11 @@ public class ReportServiceImpl implements ReportService {
 	public boolean exportExcel(HttpServletResponse response) throws Exception {
 		List<CitizenPlan> plans = planRepo.findAll();
 		exportExcel.generate(response, plans);
+		
+		String subject ="Test mail sub";
+		String body = "Test mail body";
+		String to = "akasharjun.davane@gmail.com";
+		emailUtils.sendEmail(subject, body, to);
 		return true;
 	}
 

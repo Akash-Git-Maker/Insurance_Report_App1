@@ -1,7 +1,6 @@
 package com.akashit.util;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.List;
 
@@ -24,7 +23,7 @@ public class ExportExcel {
 	@Autowired
 	private CitizenRepository planRepo;
 	
-	public void generate (HttpServletResponse response, List<CitizenPlan> plans) throws Exception {
+	public void generate (HttpServletResponse response, List<CitizenPlan> plans, File file) throws Exception {
 		
 		List<CitizenPlan> records = planRepo.findAll();
 
@@ -67,7 +66,7 @@ public class ExportExcel {
 			}
 		}
 
-		FileOutputStream fos = new FileOutputStream(new File("plans.xls"));
+		FileOutputStream fos = new FileOutputStream( file);
 		workbook.write(fos);
 		ServletOutputStream outputStream = response.getOutputStream();
 		workbook.write(outputStream);

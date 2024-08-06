@@ -1,5 +1,6 @@
 package com.akashit.service;
 
+import java.io.File;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,21 +59,32 @@ public class ReportServiceImpl implements ReportService {
 
 	@Override
 	public boolean exportExcel(HttpServletResponse response) throws Exception {
+		File file  = new File ("plans.xls");
 		List<CitizenPlan> plans = planRepo.findAll();
-		exportExcel.generate(response, plans);
+		exportExcel.generate(response, plans, file);
 		
-		String subject ="Test mail sub";
-		String body = "Test mail body";
-		String to = "akasharjun.davane@gmail.com";
-		emailUtils.sendEmail(subject, body, to);
+		String subject ="You have received a Excel File";
+		String body = "Welcome To Akash-IT";
+		String to = "hunterhunts91@gmail.com";
+		
+		
+		emailUtils.sendEmail(subject, body, to,file );
+		file.delete();
 		return true;
 	}
 
 	@Override
 	public boolean exportPdf(HttpServletResponse response) throws Exception {
-	    
+		File file  = new File ("plans.pdf");
 		List<CitizenPlan> plans = planRepo.findAll();
-		exportPdf.generate(response, plans);
+		
+		exportPdf.generate(response, plans, file);
+		String subject ="You have received a Excel File";
+		String body = "Welcome To Akash-IT";
+		String to = "hunterhunts91@gmail.com";
+		
+		emailUtils.sendEmail(subject, body, to,file );
+		file.delete();
 	    return true;
 	}
  
